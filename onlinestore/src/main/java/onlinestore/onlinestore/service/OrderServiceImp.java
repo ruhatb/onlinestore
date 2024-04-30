@@ -3,9 +3,11 @@ package onlinestore.onlinestore.service;
 import onlinestore.onlinestore.dto.OrderDTO;
 import onlinestore.onlinestore.dto.OrderResponse;
 import onlinestore.onlinestore.entity.Order;
+import onlinestore.onlinestore.exceptions.NotFoundExceptions;
 import onlinestore.onlinestore.repository.OrderRepository;
 import onlinestore.onlinestore.util.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
@@ -13,6 +15,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Service
 public class OrderServiceImp implements OrderService{
 
     private final OrderRepository orderRepository;
@@ -47,7 +50,7 @@ public class OrderServiceImp implements OrderService{
     public List<OrderDTO> getAllOrdersForCustomer(Long customerId) {
         List<Order> orders = orderRepository.findByCustomerId(customerId);
         if (orders.isEmpty()) {
-            return Collections.emptyList();
+            throw new NotFoundExceptions("No orders found: " + customerId);
         } else {
             return orders.stream().map(Converter::convertToDto).collect(Collectors.toList());
         }

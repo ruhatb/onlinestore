@@ -1,7 +1,9 @@
 package onlinestore.onlinestore.util;
 
+import onlinestore.onlinestore.dto.CostumerDTO;
 import onlinestore.onlinestore.dto.OrderDTO;
 import onlinestore.onlinestore.dto.OrderResponse;
+import onlinestore.onlinestore.entity.Costumer;
 import onlinestore.onlinestore.entity.Order;
 
 import java.util.List;
@@ -18,5 +20,9 @@ public class Converter {
 
     public static List<OrderDTO> convertToDtoList(List<Order> orders) {
         return orders.stream().map(Converter::convertToDto).collect(Collectors.toList());
+    }
+
+    public static CostumerDTO convertToDto(Costumer costumer) {
+        return new CostumerDTO(costumer.getId(), costumer.getName());
     }
 }
