@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +21,11 @@ public class Order extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    private Costumer costumer;
+    private Long costumerId;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private List<SelectOrder> orderItems = new ArrayList<>();
+
+    @Column(name = "total_price")
+    private BigDecimal totalPrice;
 }

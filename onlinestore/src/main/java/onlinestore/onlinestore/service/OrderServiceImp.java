@@ -4,10 +4,14 @@ import onlinestore.onlinestore.dto.OrderDTO;
 import onlinestore.onlinestore.dto.OrderResponse;
 import onlinestore.onlinestore.entity.Order;
 import onlinestore.onlinestore.repository.OrderRepository;
-import onlinestore.onlinestore.util.OrderDtoConvertion;
+import onlinestore.onlinestore.util.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class OrderServiceImp implements OrderService{
 
@@ -18,38 +22,35 @@ public class OrderServiceImp implements OrderService{
         this.orderRepository = orderRepository;
     }
 
+
     @Override
-    public OrderDTO placeOrder(OrderDTO orderDTO) {
-
-        Order order = OrderDtoConvertion.convertOrder(OrderDTO orderDTO);
-
-
+    public OrderResponse placeOrder(OrderDTO orderDTO) {
+        Order order = new Order();
+        order.setCostumerId(orderDTO.costumerId());
+        order.setTotalPrice(orderDTO.totalPrice());
         Order savedOrder = orderRepository.save(order);
 
-
-        OrderResponse  orderResponse = OrderDtoConvertion.convertOrder(savedOrder);
-
-
-        return OrderDtoConvertion.convertOrder(orderResponse);
-    }
-    @Override
-    public OrderDTO getOrderForCode(String orderCode) {
-        return null;
+        return Converter.convertToResponse(savedOrder);
     }
 
     @Override
-    public List<OrderDTO> getAllOrdersForCustomer(Long customerId) {
-        return null;
-    }
-}
-
-    @Override
-    public OrderDTO getOrderForCode(String orderCode) {
-        return null;
+    public OrderDTO getOrderById(Long orderCode) {
+        Order order = orderRepository.findById(orderCode).orElse(null);
+        if (order != null) {
+            return Converter.convertToDto(order);
+        } else {
+            throw new NoSuchElementException("Order not found with id: " + orderCode);
+        }
     }
 
     @Override
     public List<OrderDTO> getAllOrdersForCustomer(Long customerId) {
-        return null;
+        List<Order> orders = orderRepository.findByCustomerId(customerId);
+        if (orders.isEmpty()) {
+            return Collections.emptyList();
+        } else {
+            return orders.stream().map(Converter::convertToDto).collect(Collectors.toList());
+        }
     }
+
 }
