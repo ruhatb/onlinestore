@@ -25,4 +25,8 @@ public class Cart extends BaseEntity {
     @OneToMany(mappedBy = "cart")
     private List<SelectCart> selectCarts;
 
+    public Costumer getCustomer() {
+        return this.costumer;
+
+    }
 }
