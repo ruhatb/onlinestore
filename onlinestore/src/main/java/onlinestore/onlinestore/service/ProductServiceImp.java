@@ -23,6 +23,11 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public Product createProduct(ProductResponse response) {
+
+        if (response.stock() < 0) {
+            throw new IllegalArgumentException("Stock cannot be negative.");
+        }
+
         Product product = new Product();
         product.setName(response.name());
         product.setPrice(response.price());
@@ -30,8 +35,13 @@ public class ProductServiceImp implements ProductService {
         return productRepository.save(product);
     }
 
+
     @Override
     public Product updateProduct(Long id, ProductResponse response) {
+        if (response.stock() < 0) {
+            throw new IllegalArgumentException("Stock cannot be negative.");
+        }
+
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found  id: " + id));
 

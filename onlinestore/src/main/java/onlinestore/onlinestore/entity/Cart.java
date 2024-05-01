@@ -6,10 +6,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @AllArgsConstructor
@@ -29,4 +32,7 @@ public class Cart extends BaseEntity {
         return this.costumer;
 
     }
+
+    @Column(name = "total_price")
+    private BigDecimal totalPrice;
 }

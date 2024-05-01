@@ -1,4 +1,6 @@
 package onlinestore.onlinestore.dto;
 
-public record ProductResponse(String name, Double price, Long stock) {
+import java.math.BigDecimal;
+
+public record ProductResponse(String name, BigDecimal price, Long stock) {
 }
