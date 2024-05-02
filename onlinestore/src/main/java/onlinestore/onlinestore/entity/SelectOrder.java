@@ -3,16 +3,18 @@ package onlinestore.onlinestore.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Data
-public class SelectOrder {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class SelectOrder extends BaseEntity{
+
 
     @ManyToOne
     private Order order;
@@ -20,5 +22,5 @@ public class SelectOrder {
     @ManyToOne
     private Product product;
     private int quantity;
-    private double tagPrice;
+    private BigDecimal tagPrice;
 }
